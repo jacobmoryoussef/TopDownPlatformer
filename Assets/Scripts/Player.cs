@@ -1,65 +1,97 @@
+using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
 
-    int TurnDirection;
-    Rigidbody2D rb;
-    [SerializeField] float zVelocity;
+    // 1 = right, -1 = left
+    int direction = 1;
+    Animator animator;
+    [SerializeField] bool IsJumping;
+    [SerializeField] float yJumpVelocity;
+    [SerializeField] float GroundY;
+    
 
     [Header("Adjustments")]
-    [SerializeField] float Speed;
-    [SerializeField] float MaxSpeed;
-    [SerializeField] float RotationSpeed;
-    [SerializeField] float JumpHeight;
-    [SerializeField] float zGravity;
+    [SerializeField] float PlayerSpeed;
     [SerializeField] float PlayerSize;
+    [SerializeField] float JumpGravity;
+    [SerializeField] float JumpPower;
 
     private void Start()
     {
-        
-        rb = GetComponent<Rigidbody2D>();
+
+        IsJumping = false;
+        animator = GetComponent<Animator>();
 
     }
 
     void Update()
     {
 
-        TurnDirection = 0;
-        if (Input.GetKey(KeyCode.D))
-            TurnDirection = -1;
-        if (Input.GetKey(KeyCode.A))
-            TurnDirection = 1;
-
-        transform.position = new Vector3(transform.position.x, transform.position.y, zVelocity);
-
-        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, PlayerSize * zVelocity);
+        if (direction == 1)
+            transform.localScale = new Vector3(PlayerSize, PlayerSize, PlayerSize);
+        else
+            transform.localScale = new Vector3(-PlayerSize, PlayerSize, PlayerSize);
 
     }
 
     private void FixedUpdate()
     {
-
-        //Vector3 CurrentVelocity = rb.linearVelocity;
-
-        //if (CurrentVelocity.magnitude > MaxSpeed)
-        //CurrentVelocity = CurrentVelocity.normalized * MaxSpeed;
-
-        if (Input.GetKey(KeyCode.W))
-            if (rb.linearVelocity.magnitude < MaxSpeed)
-                rb.AddForce(transform.up * Speed);
-
-            rb.MoveRotation(rb.rotation + (RotationSpeed * TurnDirection));
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-
-            zVelocity = zVelocity + JumpHeight;
+        
+        if (Input.GetKey(KeyCode.D))
+        { 
+        
+            transform.position = transform.position + new Vector3(PlayerSpeed, 0, 0);
+            direction = 1;
         
         }
+        if (Input.GetKey(KeyCode.A))
+        { 
+        
+            transform.position = transform.position + new Vector3(-PlayerSpeed, 0, 0);
+            direction = -1;
+        
+        }
+        if (Input.GetKey(KeyCode.W))
+            transform.position = transform.position + new Vector3(0, PlayerSpeed, 0);
+        if (Input.GetKey(KeyCode.S))
+            transform.position = transform.position + new Vector3(0, -PlayerSpeed, 0);
 
-        zVelocity = zVelocity * zGravity;
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            if (IsJumping == false)
+            {
+
+                IsJumping = true;
+                GroundY = transform.position.y;
+                yJumpVelocity = JumpPower;
+
+            }
+
+        if (IsJumping)
+        { 
+        
+            transform.position = transform.position + new Vector3(0, yJumpVelocity, 0);
+
+            if (transform.position.y < GroundY)
+            {
+
+                IsJumping = false;
+                transform.position = new Vector3(transform.position.x, GroundY, transform.position.z);
+            
+            }
+
+            yJumpVelocity = yJumpVelocity - JumpGravity;
+
+        }
+
+
+
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+            animator.SetBool("IsWalking", true);
+        else
+            animator.SetBool("IsWalking", false);
 
     }
 
