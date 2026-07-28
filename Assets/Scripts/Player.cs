@@ -5,21 +5,21 @@ public class Player : MonoBehaviour
 {
 
     // 1 = right, -1 = left
-    int direction = 1;
+    public   int direction = 1;
     Animator animator;
-    bool IsJumping;
+    public bool IsJumping;
     float yJumpVelocity;
-    float GroundY;
+    public float GroundY;
     BoxCollider2D BoxCollider;
     [SerializeField] public bool OnPlatform;
     [SerializeField] public bool InRiver;
-    
 
     [Header("Adjustments")]
     [SerializeField] float PlayerSpeed;
     [SerializeField] float PlayerSize;
     [SerializeField] float JumpGravity;
     [SerializeField] float JumpPower;
+    [SerializeField] float SprintSpeed;
 
     private void Start()
     {
@@ -71,7 +71,10 @@ public class Player : MonoBehaviour
         
             transform.position = transform.position + new Vector3(PlayerSpeed, 0, 0);
             direction = 1;
-        
+            
+            if (Input.GetKey(KeyCode.LeftShift))
+                transform.position = transform.position + new Vector3(SprintSpeed, 0, 0);
+
         }
 
         if (Input.GetKey(KeyCode.A))
@@ -79,7 +82,10 @@ public class Player : MonoBehaviour
         
             transform.position = transform.position + new Vector3(-PlayerSpeed, 0, 0);
             direction = -1;
-        
+
+            if (Input.GetKey(KeyCode.LeftShift))
+                transform.position = transform.position + new Vector3(-SprintSpeed, 0, 0);
+
         }
 
         if (Input.GetKey(KeyCode.W))
@@ -89,7 +95,10 @@ public class Player : MonoBehaviour
 
             if (IsJumping)
                 GroundY = GroundY + PlayerSpeed;
-        
+
+            if (Input.GetKey(KeyCode.LeftShift))
+                transform.position = transform.position + new Vector3(0, SprintSpeed, 0);
+
         }
 
         if (Input.GetKey(KeyCode.S))
@@ -99,7 +108,10 @@ public class Player : MonoBehaviour
 
             if (IsJumping)
                 GroundY = GroundY - PlayerSpeed;
-        
+
+            if (Input.GetKey(KeyCode.LeftShift))
+                transform.position = transform.position + new Vector3(0, -SprintSpeed, 0);
+
         }
 
         if (IsJumping)
