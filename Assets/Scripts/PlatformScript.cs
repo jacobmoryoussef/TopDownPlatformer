@@ -1,25 +1,25 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class Platform : MonoBehaviour
+public class PlatformScript : MonoBehaviour
 {
-
-    Transform transform;
 
     [Header("Adjustments")]
     [SerializeField] float PlatformSpeed;
     [SerializeField] float DespawnArea;
+    [SerializeField] float PlatformSize;
 
     [Header("Manager")]
     [SerializeField] PlatformManager Manager;
 
     void Start()
     {
-        
-        transform = GetComponent<Transform>();
+
+        transform.localScale = new Vector3(PlatformSize, PlatformSize, PlatformSize);
 
     }
 
-    void Update()
+    void FixedUpdate()
     {
 
         transform.position = transform.position + new Vector3(0, -PlatformSpeed, 0);
