@@ -1,5 +1,7 @@
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -60,6 +62,13 @@ public class Player : MonoBehaviour
 
         if (InRiver && !OnPlatform && !IsJumping)
                 Debug.Log("Player Dead");
+
+        if (InRiver && !OnPlatform && !IsJumping)
+        {
+
+            SceneManager.LoadScene("Game");
+        
+        }
 
     }
 

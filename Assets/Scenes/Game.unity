@@ -2228,7 +2228,7 @@ MonoBehaviour:
   PlayerSize: 0.5
   JumpGravity: 0.025
   JumpPower: 0.35
-  SprintSpeed: 0.05
+  SprintSpeed: 0.1
 --- !u!212 &2128564281
 SpriteRenderer:
   serializedVersion: 3
