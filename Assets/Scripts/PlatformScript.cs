@@ -15,6 +15,11 @@ public class PlatformScript : MonoBehaviour
     void Start()
     {
 
+        Manager.PlatformList.Add(gameObject);
+        PolygonCollider2D collider;
+        collider = gameObject.AddComponent<PolygonCollider2D>();
+        collider.isTrigger = true;
+        
         transform.localScale = new Vector3(PlatformSize, PlatformSize, PlatformSize);
 
     }
@@ -27,6 +32,7 @@ public class PlatformScript : MonoBehaviour
         if (transform.position.y < DespawnArea)
         {
 
+            Manager.PlatformList.Remove(gameObject);
             Destroy(gameObject);
         
         }

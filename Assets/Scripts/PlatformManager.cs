@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlatformManager : MonoBehaviour
@@ -5,6 +6,7 @@ public class PlatformManager : MonoBehaviour
 
     float TimePassed;
     float NextSpawn;
+    public List<GameObject> PlatformList;
 
     [Header("Prefab")]
     [SerializeField] GameObject PlatformPrefab;
