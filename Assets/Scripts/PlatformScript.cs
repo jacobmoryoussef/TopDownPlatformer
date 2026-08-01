@@ -1,21 +1,18 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlatformScript : MonoBehaviour
 {
 
     [Header("Adjustments")]
-    [SerializeField] float PlatformSpeed;
+    [SerializeField] public float PlatformSpeed;
     [SerializeField] float DespawnArea;
     [SerializeField] float PlatformSize;
 
-    [Header("Manager")]
-    [SerializeField] PlatformManager Manager;
+    PlatformManager Manager;
 
     void Start()
     {
 
-        Manager.PlatformList.Add(gameObject);
         PolygonCollider2D collider;
         collider = gameObject.AddComponent<PolygonCollider2D>();
         collider.isTrigger = true;
@@ -32,11 +29,18 @@ public class PlatformScript : MonoBehaviour
         if (transform.position.y < DespawnArea)
         {
 
-            Manager.PlatformList.Remove(gameObject);
+            Manager.RemovePlatFromList(gameObject);
             Destroy(gameObject);
         
         }
 
+    }
+
+    public void SetManager(PlatformManager ManagerScipt)
+    {
+
+        Manager = ManagerScipt;
+    
     }
 
 }

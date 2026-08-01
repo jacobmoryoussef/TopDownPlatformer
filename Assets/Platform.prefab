@@ -105,7 +105,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8e5c1954fce7d640ab9835ad1a0791b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Platform
-  PlatformSpeed: 0.05
-  DespawnArea: -10
+  PlatformSpeed: 0.1
+  DespawnArea: -15
   PlatformSize: 1
-  Manager: {fileID: 0}

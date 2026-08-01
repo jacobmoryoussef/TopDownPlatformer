@@ -7,6 +7,7 @@ public class PlatformManager : MonoBehaviour
     float TimePassed;
     float NextSpawn;
     public List<GameObject> PlatformList;
+    [SerializeField] GameObject Player;
 
     [Header("Prefab")]
     [SerializeField] GameObject PlatformPrefab;
@@ -27,7 +28,13 @@ public class PlatformManager : MonoBehaviour
     {
 
         NextSpawn = SpawnRate;
-        SpawnPlatform();
+
+        for (int i = -10; i < 15; i = i + 5)
+        {
+
+            SpawnPlatform(new Vector3(Random.Range(SpawnRangeLeft, SpawnRangeRight), i, 0));
+
+        }
 
     }
 
@@ -39,21 +46,25 @@ public class PlatformManager : MonoBehaviour
         if (TimePassed > NextSpawn)
         {
 
-            SpawnPlatform();
+            SpawnPlatform(new Vector3(Random.Range(SpawnRangeLeft, SpawnRangeRight), Player.transform.position.y + 12f, 0));
             NextSpawn = TimePassed + SpawnRate;
 
         }
 
     }
 
-    public void SpawnPlatform()
+    public void SpawnPlatform(Vector3 PlatformPosition)
     {
 
         int RandomSprite = Random.Range(1, 5);
 
-        Vector3 PlatformPosition = new Vector3(Random.Range(SpawnRangeLeft, SpawnRangeRight), 10, 0);
         GameObject Platform = Instantiate(PlatformPrefab, PlatformPosition, Quaternion.identity);
         SpriteRenderer sr = Platform.GetComponent<SpriteRenderer>();
+
+        PlatformList.Add(Platform);
+
+        PlatformScript PlatformScript = Platform.GetComponent<PlatformScript>();
+        PlatformScript.SetManager(this);
 
         if (RandomSprite == 1)
             sr.sprite = Platform1;
@@ -64,8 +75,14 @@ public class PlatformManager : MonoBehaviour
         if (RandomSprite == 4)
             sr.sprite = Platform4;
 
-        PlatformScript PlatformScript = Platform.GetComponent<PlatformScript>();
 
+    }
+
+    public void RemovePlatFromList(GameObject platform)
+    {
+
+        PlatformList.Remove(platform);
+    
     }
 
 }

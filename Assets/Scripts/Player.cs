@@ -5,14 +5,21 @@ public class Player : MonoBehaviour
 {
 
     // 1 = right, -1 = left
-    public   int direction = 1;
+    public int direction = 1;
     Animator animator;
     public bool IsJumping;
     float yJumpVelocity;
     public float GroundY;
     BoxCollider2D BoxCollider;
-    [SerializeField] public bool OnPlatform;
-    [SerializeField] public bool InRiver;
+
+    //Number of platforms standing on
+    float NOPS;
+    public bool OnPlatform;
+    public bool InRiver;
+    //Platform adjustment speed
+    float PAS;
+
+    [SerializeField] PlatformManager platformManager;
 
     [Header("Adjustments")]
     [SerializeField] float PlayerSpeed;
@@ -24,6 +31,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
 
+        NOPS = 0;
         BoxCollider = GetComponent<BoxCollider2D>();
         IsJumping = false;
         animator = GetComponent<Animator>();
@@ -67,6 +75,12 @@ public class Player : MonoBehaviour
             SceneManager.LoadScene("Game");
         
         }
+
+        if (NOPS > 0)
+            OnPlatform = true;
+        else
+            OnPlatform = false;
+
 
     }
 
@@ -169,14 +183,23 @@ public class Player : MonoBehaviour
         else
             animator.SetBool("IsWalking", false);
 
+        if (OnPlatform)
+            transform.position = transform.position + new Vector3(0, -PAS, 0);
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
-        Debug.Log(collision);
-        if (collision.gameObject.CompareTag("Platform"))
-            OnPlatform = true;
+        if (platformManager.PlatformList.Contains(collision.gameObject))
+        { 
+        
+            NOPS++;
+            PlatformScript platformScript = collision.GetComponent<PlatformScript>();
+            PAS = platformScript.PlatformSpeed;
+        
+        } 
+ 
         if (collision.gameObject.CompareTag("River"))
             InRiver = true;
 
@@ -185,8 +208,9 @@ public class Player : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
 
-        if (collision.gameObject.CompareTag("Platform"))
-            OnPlatform = false;
+        if (platformManager.PlatformList.Contains(collision.gameObject))
+            NOPS--;
+
         if (collision.gameObject.CompareTag("River"))
             InRiver = false;
 
