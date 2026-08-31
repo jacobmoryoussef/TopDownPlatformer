@@ -19,7 +19,9 @@ public class Player : MonoBehaviour
     //Platform adjustment speed
     float PAS;
 
+    [Header("Managers")]
     [SerializeField] PlatformManager platformManager;
+    [SerializeField] AudioManager audioManager;
 
     [Header("Adjustments")]
     [SerializeField] float PlayerSpeed;
@@ -50,6 +52,7 @@ public class Player : MonoBehaviour
             if (IsJumping == false)
             {
 
+                audioManager.PlayJumpSFX();
                 IsJumping = true;
                 GroundY = transform.position.y;
                 yJumpVelocity = JumpPower;
