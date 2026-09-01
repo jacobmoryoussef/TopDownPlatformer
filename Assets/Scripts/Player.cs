@@ -29,10 +29,12 @@ public class Player : MonoBehaviour
     [SerializeField] float JumpGravity;
     [SerializeField] float JumpPower;
     [SerializeField] float SprintSpeed;
+    [SerializeField] public Vector2 PlayerSpawnPoint;
 
     private void Start()
     {
 
+        transform.position = new Vector3(PlayerSpawnPoint.x, PlayerSpawnPoint.y, 0);
         NOPS = 0;
         BoxCollider = GetComponent<BoxCollider2D>();
         IsJumping = false;

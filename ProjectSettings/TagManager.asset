@@ -43,6 +43,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Ground
+    uniqueID: 2283612113
+    locked: 0
+  - name: Trees
+    uniqueID: 2985416083
+    locked: 0
+  - name: Player
+    uniqueID: 1827125571
+    locked: 0
   m_RenderingLayers:
   - Default
   m_MigratedRenderPipelines: []
